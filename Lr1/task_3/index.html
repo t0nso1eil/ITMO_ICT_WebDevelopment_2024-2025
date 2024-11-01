@@ -9,8 +9,10 @@
       
       
       
-        <link rel="prev" href="../task_4/">
+        <link rel="prev" href="../task_2/">
       
+      
+        <link rel="next" href="../task_4/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -18,7 +20,7 @@
     
     
       
-        <title>Task 5 - Документация к лабораторным работам</title>
+        <title>Task 3 - Документация к лабораторным работам</title>
       
     
     
@@ -99,7 +101,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Task 5
+              Task 3
             
           </span>
         </div>
@@ -223,7 +225,7 @@
             
   
   <span class="md-ellipsis">
-    Lab 1
+    Лабораторная работа номер 1
   </span>
   
 
@@ -233,7 +235,7 @@
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
-            Lab 1
+            Лабораторная работа номер 1
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -281,46 +283,6 @@
                 
   
   
-  
-    <li class="md-nav__item">
-      <a href="../task_3/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Task 3
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../task_4/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Task 4
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -334,7 +296,7 @@
           
   
   <span class="md-ellipsis">
-    Task 5
+    Task 3
   </span>
   
 
@@ -345,7 +307,7 @@
         
   
   <span class="md-ellipsis">
-    Task 5
+    Task 3
   </span>
   
 
@@ -384,7 +346,8 @@
     Алгоритм работы программы:
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Алгоритм работы программы:">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
@@ -397,11 +360,117 @@
     </nav>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
     </ul>
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task_4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 4
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../task_5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Task 5
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Лабораторная работа номер 2
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Лабораторная работа номер 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Lr2/implementation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Выполнение
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -458,12 +527,18 @@
     Алгоритм работы программы:
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Алгоритм работы программы:">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#_4" class="md-nav__link">
     Запуск:
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -487,37 +562,33 @@
                   
 
 
-  <h1>Task 5</h1>
+  <h1>Task 3</h1>
 
 <h2 id="_1">Цель:</h2>
-<p>Необходимо написать простой web-сервер для обработки GET и POST http запросов средствами Python и библиотеки socket.
-Задание: сделать сервер, который может:
-● Принять и записать информацию о дисциплине и оценке по дисциплине.
-● Отдать информацию обо всех оценах по дсициплине в виде html-страницы.</p>
+<p>Реализовать серверную часть приложения. Клиент подключается к серверу. В ответ клиент получает http-сообщение, содержащее html-страницу, которую сервер подгружает из файла index.html.</p>
 <h3 id="_2">Реализация:</h3>
 <p><strong>Серверная часть</strong>:
-1. Сервер прослушивает соединения на порту <code>8080</code>.
-2. Поддерживаются следующие HTTP-запросы:
- - <code>GET /submit</code>: возвращает HTML-страницу с формой для отправки оценки.
- - <code>GET /grades</code>: возвращает HTML-страницу со списком всех сохранённых оценок.
- - <code>POST /submit</code>: обрабатывает данные, отправленные с формы, добавляет оценку и перенаправляет клиента на страницу со списком оценок.
-3. Сервер хранит оценки в памяти в формате <code>Map&lt;String, List&lt;Integer&gt;&gt;</code>, где ключом является название дисциплины, а значением — список оценок.</p>
+1. Сервер ожидает подключения клиента через заданный порт.
+2. Когда клиент подключается, сервер считывает HTTP-запрос, который отправляется клиентом.
+3. После получения запроса сервер загружает HTML-файл с диска (<code>index.html</code>).
+4. Сервер формирует HTTP-ответ, который включает в себя статус <code>200 OK</code>, тип содержимого (<code>Content-Type: text/html</code>) и длину содержимого (<code>Content-Length</code>).
+5. В теле HTTP-ответа содержится HTML-код, который был подгружен из файла.
+6. Сервер отправляет этот ответ клиенту.</p>
 <h3 id="_3">Алгоритм работы программы:</h3>
-<ul>
-<li>Запускается и прослушивает порт <code>8080</code>.</li>
-<li>При подключении клиента сервер обрабатывает HTTP-запрос, анализируя метод (GET или POST) и путь запроса.</li>
-<li>Если клиент запрашивает страницу через <code>GET /submit</code>, сервер отправляет HTML-форму для отправки оценки.</li>
-<li>Если клиент запрашивает <code>GET /grades</code>, сервер отправляет список всех сохранённых оценок.</li>
-<li>При запросе <code>POST /submit</code> сервер обрабатывает данные формы, добавляет новую оценку в память и перенаправляет клиента на страницу со списком оценок.</li>
-</ul>
-<h3 id="_4">Запуск:</h3>
-<p>Запуск сервера:
+<ol>
+<li>Сервер запускается и слушает порт, ожидая подключения клиентов.</li>
+<li>Когда клиент подключается (например, браузер отправляет HTTP-запрос), сервер принимает подключение.</li>
+<li>Сервер загружает HTML-страницу из файла <code>index.html</code>.</li>
+<li>Сервер отправляет HTTP-ответ, который включает заголовки и содержимое HTML-страницы.</li>
+</ol>
+<h4 id="_4">Запуск:</h4>
+<p><strong>Запуск сервера:</strong>
   <code>bash
-  java Server.java</code></p>
-<p>Чтобы получить HTML-форму для отправки оценки, перейдите в браузере по адресу:
-  <code>http://localhost:8080/submit</code></p>
-<p>Для просмотра списка оценок перейдите по адресу:
-  <code>http://localhost:8080/grades</code></p>
+  java Server.java</code>
+<strong>Запуск клиентской части:</strong>
+1. Откройте браузер.
+2. Введите в адресной строке:
+   <code>http://localhost:8080</code></p>
 
 
 
