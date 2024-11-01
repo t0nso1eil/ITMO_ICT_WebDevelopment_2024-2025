@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Owners List</title>
+</head>
+<body>
+    <h1>List of car owners</h1>
+    <ul>
+        {% for owner in owners %}
+            <li>{{ owner.first_name }} {{ owner.last_name }} - {{ owner.passport_number }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
