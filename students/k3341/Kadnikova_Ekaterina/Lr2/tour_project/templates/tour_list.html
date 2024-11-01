@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Available Tours{% endblock %}
+{% block content %}
+<h2>Available Tours</h2>
+
+<form method="get" class="filter-form">
+    {{ form.as_p }}
+    <button type="submit">Apply Filters</button>
+</form>
+
+<div class="tour-list">
+    {% for tour in tours %}
+        <div class="tour-item">
+            <h3>{{ tour.name }}</h3>
+            <p><strong>Agency:</strong> {{ tour.agency.name }}</p>
+            <p><strong>Description:</strong> {{ tour.description }}</p>
+            <p><strong>Dates:</strong> {{ tour.start_date }} - {{ tour.end_date }}</p>
+            <p><strong>Payment Conditions:</strong> {{ tour.payment_conditions }}</p>
+            <a href="{% url 'tour_detail' tour.id %}" class="book-btn">More...</a>
+            <a href="{% url 'book_tour' tour.id %}" class="book-btn">Book Now</a>
+        </div>
+    {% empty %}
+        <p>No tours available.</p>
+    {% endfor %}
+</div>
+{% endblock %}
