@@ -9,5 +9,7 @@ nav:
       - "Task 5": Lr1/task_5.md
   - Лабораторная работа номер 2:
     - Выполнение: Lr2/implementation.md
+  - Лабораторная работа номер 3:
+      - Выполнение: Lr3/implementation.md
 theme:
   name: material
