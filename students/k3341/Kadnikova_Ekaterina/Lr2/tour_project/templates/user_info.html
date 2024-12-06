@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block header_title %}My info{% endblock %}
+
+{% block content %}
+<p>Username: {{ user.username }}</p>
+<p>Email: {{ user.email }}</p>
+<p>Registration date: {{ user.date_joined }}</p>
+{% endblock %}

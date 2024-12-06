@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
-
-{% block title %}{{ tour.name }}{% endblock %}
+{% block header_title %}{{ tour.name }}{% endblock %}
 
 {% block content %}
-<h2>{{ tour.name }}</h2>
 
 <div>
     <h3>Agency: {{ agency.name }}</h3>
@@ -20,7 +18,9 @@
     <p><strong>Average Rating:</strong> {{ average_rating }}</p>
 {% endif %}    
 <p><strong>Available Seats:</strong> {{ tour.available_seats }}</p>
-
+{% if perms.tour_app.can_confirm_booking %}
+    <a href="{% url 'manage_bookings' tour.id %}" class="book-btn">Manage Bookings</a>
+{% endif %}
 {% if booking_confirmed %}
     <p><strong>Your booking is confirmed.</strong></p>
     <a href="{% url 'add_review' tour.id %}" class="book-btn">Add a review</a>

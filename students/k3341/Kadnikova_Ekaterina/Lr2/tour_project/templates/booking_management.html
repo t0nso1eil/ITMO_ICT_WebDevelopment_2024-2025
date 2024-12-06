@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Bookings for {{ tour.name }}{% endblock %}
+
+{% block content %}
+<h2>Manage Bookings for "{{ tour.name }}"</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Date Reserved</th>
+            <th>Confirmed</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for booking in bookings %}
+        <tr>
+            <td>{{ booking.user.username }}</td>
+            <td>{{ booking.date_reserved|date:"F j, Y" }}</td>
+            <td>
+                <form method="post" action="{% url 'manage_bookings' tour.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="booking_id" value="{{ booking.id }}">
+                    <input type="checkbox" name="is_confirmed" onchange="this.form.submit()" {% if booking.is_confirmed %}checked{% endif %}>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -3,9 +3,11 @@ from django.contrib.auth import logout
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from .forms import UserRegistrationForm, BookingForm, ReviewForm, TourFilterForm
 from .models import Tour, Booking
+from django.urls import reverse
+from django.core.paginator import Paginator
 
 def register(request):
     if request.method == 'POST':
@@ -38,23 +40,41 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
+@login_required
+def user_info(request):
+    return render(request, 'user_info.html', {'user': request.user})
+
+@login_required
+def user_bookings(request):
+    bookings = Booking.objects.filter(user=request.user)
+    return render(request, 'user_bookings.html', {'bookings': bookings})
+
+
 def tour_list(request):
     tours = Tour.objects.all()
     form = TourFilterForm(request.GET)
+
     if form.is_valid():
         name = form.cleaned_data.get('name')
         start_date = form.cleaned_data.get('start_date')
         end_date = form.cleaned_data.get('end_date')
+
         if name:
             tours = tours.filter(name__icontains=name)
         if start_date:
             tours = tours.filter(start_date__gte=start_date)
         if end_date:
             tours = tours.filter(end_date__lte=end_date)
+
+    paginator = Paginator(tours, 8)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'tours': tours,
-        'form': form
+        'tours': page_obj,
+        'form': form,
     }
+
     return render(request, 'tour_list.html', context)
 
 @login_required
@@ -127,3 +147,17 @@ def add_review(request, tour_id):
 def custom_logout(request):
     logout(request)
     return redirect('tour_list')
+
+
+@permission_required('tour_app.can_confirm_booking', raise_exception=True)
+def manage_bookings(request, tour_id):
+    tour = get_object_or_404(Tour, id=tour_id)
+    if request.method == 'POST':
+        booking_id = request.POST.get('booking_id')
+        is_confirmed = request.POST.get('is_confirmed') == 'on'
+        booking = Booking.objects.get(id=booking_id)
+        booking.is_confirmed = is_confirmed
+        booking.save()
+        return redirect(reverse('manage_bookings', args=[tour_id]))
+    bookings = Booking.objects.filter(tour=tour).select_related('user')
+    return render(request, 'booking_management.html', {'bookings': bookings, 'tour': tour})

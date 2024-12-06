@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
-{% block title %}Book Tour{% endblock %}
+{% block header_title %}Book {{ tour.name }}{% endblock %}
+
 {% block content %}
-<h2>Book {{ tour.name }}</h2>
     <p>Are you sure you want to book this tour?</p>
 <form method="post">
     {% csrf_token %}

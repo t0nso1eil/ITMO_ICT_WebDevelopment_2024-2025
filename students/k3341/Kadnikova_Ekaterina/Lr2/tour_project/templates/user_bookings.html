@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block header_title %}My Bookings{% endblock %}
+
+{% block content %}
+<ul>
+    {% for booking in bookings %}
+        <li>{{ booking.tour.name }} — {{ booking.date }}</li>
+    {% empty %}
+        <li>You have no bookings.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
