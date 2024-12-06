@@ -696,6 +696,10 @@ Owner ID: 1, Name: Иван Иванов
 &gt;&gt;&gt; license_obj = DriverLicense.objects.get(owner_id=owner.id)
 &gt;&gt;&gt; print(f&quot;License: {license_obj.license_number}, Type: {license_obj.type}, Date of Issue: {license_obj.date_of_issue}&quot;)
 License: 1234567890, Type: B, Date of Issue: 2015-06-01
+&gt;&gt;&gt; owner = Owner.objects.first()
+&gt;&gt;&gt; license_obj = owner.licenses.first()
+&gt;&gt;&gt; print(f&quot;License: {license_obj.license_number}, Type: {license_obj.type}&quot;)
+License: 1234567890, Type: B
 &gt;&gt;&gt; owners = Owner.objects.filter(ownerships__car__color=&quot;Красный&quot;)
 &gt;&gt;&gt; for owner in owners:
 ...     print(owner.firstName, owner.lastName, owner.id)
@@ -718,10 +722,6 @@ License: 1234567890, Type: B, Date of Issue: 2015-06-01
 Татьяна Смирнова 6
 Алексей Васильев 7
 Алексей Васильев 7
-&gt;&gt;&gt; owner = Owner.objects.first()
-&gt;&gt;&gt; license_obj = owner.licenses.first()
-&gt;&gt;&gt; print(f&quot;License: {license_obj.license_number}, Type: {license_obj.type}&quot;)
-License: 1234567890, Type: B
 </code></pre>
 <p><img alt="" src="../pics/2.1.png" />
 <img alt="" src="../pics/2.2.png" />
