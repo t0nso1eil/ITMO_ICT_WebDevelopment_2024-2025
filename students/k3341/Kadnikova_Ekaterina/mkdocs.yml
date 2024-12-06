@@ -10,6 +10,7 @@ nav:
   - Лабораторная работа номер 2:
     - Выполнение: Lr2/implementation.md
   - Лабораторная работа номер 3:
+      - Практическое задание: Lr3/practice.md
       - Выполнение: Lr3/implementation.md
 theme:
   name: material
