@@ -696,24 +696,27 @@ Owner ID: 1, Name: Иван Иванов
 &gt;&gt;&gt; license_obj = DriverLicense.objects.get(owner_id=owner.id)
 &gt;&gt;&gt; print(f&quot;License: {license_obj.license_number}, Type: {license_obj.type}, Date of Issue: {license_obj.date_of_issue}&quot;)
 License: 1234567890, Type: B, Date of Issue: 2015-06-01
-&gt;&gt;&gt; red_cars = Car.objects.filter(color=&quot;Красный&quot;)
-&gt;&gt;&gt; red_car_owners = Ownership.objects.filter(car__in=red_cars).values('owner').distinct()
-&gt;&gt;&gt; owners = Owner.objects.filter(id__in=red_car_owners)
+&gt;&gt;&gt; owners = Owner.objects.filter(ownerships__car__color=&quot;Красный&quot;)
 &gt;&gt;&gt; for owner in owners:
-...     print(owner.firstName, owner.lastName)
+...     print(owner.firstName, owner.lastName, owner.id)
 ...
-Андрей Сидоров
-Алексей Васильев
-&gt;&gt;&gt; ownerships_from_2010 = Ownership.objects.filter(date_start__year__gte=2010)
-&gt;&gt;&gt; owners_2010 = Owner.objects.filter(id__in=ownerships_from_2010.values('owner'))
-&gt;&gt;&gt; for owner in owners_2010:
+Андрей Сидоров 3
+Алексей Васильев 7
+&gt;&gt;&gt; owners = Owner.objects.filter(ownerships__date_start__year=2023)
+&gt;&gt;&gt; for owner in owners:
 ...     print(owner.firstName, owner.lastName, owner.id)
 ...
 Иван Иванов 1
+Иван Иванов 1
 Мария Петрова 2
+Мария Петрова 2
+Андрей Сидоров 3
+Елена Кузнецова 4
+Елена Кузнецова 4
 Елена Кузнецова 4
 Олег Михайлов 5
 Татьяна Смирнова 6
+Алексей Васильев 7
 Алексей Васильев 7
 &gt;&gt;&gt; owner = Owner.objects.first()
 &gt;&gt;&gt; license_obj = owner.licenses.first()
@@ -722,7 +725,9 @@ License: 1234567890, Type: B
 </code></pre>
 <p><img alt="" src="../pics/2.1.png" />
 <img alt="" src="../pics/2.2.png" />
-<img alt="" src="../pics/2.3.png" /></p>
+<img alt="" src="../pics/2.3.png" />
+<img alt="" src="../pics/2.4.png" />
+<img alt="" src="../pics/2.5.png" /></p>
 <h3 id="3">Задание 3</h3>
 <p>Необходимо реализовать следующие запросы c применением описанных методов:
 * Вывод даты выдачи самого старшего водительского удостоверения
