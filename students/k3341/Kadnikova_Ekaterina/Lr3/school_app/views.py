@@ -1,10 +1,13 @@
+from django.db import IntegrityError
+from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Count, Avg
-from .models import Teacher, Student, QuarterGrade, Lesson, Classroom, Subject, Class
-from .serializers import TeacherSerializer, StudentSerializer, QuarterGradeSerializer, LessonSerializer
+from .models import Teacher, Student, QuarterGrade, Lesson, Classroom, Subject, Klass
+from .serializers import TeacherSerializer, StudentSerializer, QuarterGradeSerializer, LessonSerializer, \
+    SubjectSerializer, ClassroomSerializer, KlassSerializer
 
 
 class TeachersAPIView(GenericAPIView):
@@ -64,10 +67,13 @@ class LessonAPIView(GenericAPIView):
 
     def post(self, request):
         serializer = LessonSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            lesson_saved = serializer.save()
-            return Response({"Success": f"Lesson '{lesson_saved.id}' created successfully."})
-        return Response({"Error": "Invalid data provided."}, status=400)
+        if serializer.is_valid():
+            try:
+                lesson_saved = serializer.save()
+                return Response({"Success": f"Lesson '{lesson_saved.id}' created successfully."}, status=201)
+            except IntegrityError as e:
+                return Response({"Error": "Database error: " + str(e)}, status=400)
+        return Response(serializer.errors, status=400)
 
 
 class LessonDetailsAPIView(GenericAPIView):
@@ -127,12 +133,12 @@ class GenderCountInClassesAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        classes = Class.objects.all()
+        classes = Klass.objects.all()
         data = {}
         for klass in classes:
             boys = Student.objects.filter(klass=klass, gender="Male").count()
             girls = Student.objects.filter(klass=klass, gender="Female").count()
-            data[klass.name] = {"boys": boys, "girls": girls}
+            data[klass.id] = {"boys": boys, "girls": girls}
         return Response({"GenderCounts": data})
 
 
@@ -160,11 +166,88 @@ class ClassPerformanceAPIView(APIView):
                     avg_grade = subject_grades.aggregate(avg=Avg('grade'))['avg']
                     report[subject.name] = {"average_grade": avg_grade, "grades": list(subject_grades.values())}
 
-            class_teacher = Class.objects.get(id=klass_id).class_teacher
+            class_teacher = Klass.objects.get(id=klass_id).class_teacher
             return Response({
                 "class_teacher": f"{class_teacher.first_name} {class_teacher.last_name}" if class_teacher else None,
                 "total_students": students.count(),
                 "report": report
             })
-        except Class.DoesNotExist:
+        except Klass.DoesNotExist:
             return Response({"Error": "Class not found."}, status=404)
+
+class TeacherDetailsAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TeacherSerializer
+
+    def get(self, request, teacher_id):
+        try:
+            teacher = Teacher.objects.get(id=teacher_id)
+            serializer = TeacherSerializer(teacher)
+            return Response({"Teacher": serializer.data})
+        except Teacher.DoesNotExist:
+            return Response({"Error": "Teacher not found."}, status=404)
+
+
+class StudentDetailsAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = StudentSerializer
+
+    def get(self, request, student_id):
+        try:
+            student = Student.objects.get(id=student_id)
+            serializer = StudentSerializer(student)
+            return Response({"Student": serializer.data})
+        except Student.DoesNotExist:
+            return Response({"Error": "Student not found."}, status=404)
+
+
+class QuarterGradeCreateAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = QuarterGradeSerializer
+
+    def post(self, request):
+        serializer = QuarterGradeSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            grade_saved = serializer.save()
+            return Response({"Success": f"Grade for student ID '{grade_saved.student.id}' created successfully."})
+        return Response({"Error": "Invalid data provided."}, status=400)
+
+
+class ClassroomCreateAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ClassroomSerializer
+
+    def post(self, request):
+        serializer = ClassroomSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            classroom_saved = serializer.save()
+            return Response({"Success": f"Classroom '{classroom_saved.id}' created successfully."})
+        return Response({"Error": "Invalid data provided."}, status=400)
+
+
+class SubjectCreateAPIView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = SubjectSerializer
+
+    def post(self, request):
+        serializer = SubjectSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            subject_saved = serializer.save()
+            return Response({"Success": f"Subject '{subject_saved.name}' created successfully."})
+        return Response({"Error": "Invalid data provided."}, status=400)
+
+class KlassAPIView(APIView):
+    def post(self, request):
+        serializer = KlassSerializer(data=request.data)
+        if serializer.is_valid():
+            klass = serializer.save()
+            return Response(
+                {"Success": f"Klass '{klass.id}' created successfully."},
+                status=status.HTTP_201_CREATED
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request):
+        klasses = Klass.objects.all()
+        serializer = KlassSerializer(klasses, many=True)
+        return Response({"Classes": serializer.data}, status=status.HTTP_200_OK)

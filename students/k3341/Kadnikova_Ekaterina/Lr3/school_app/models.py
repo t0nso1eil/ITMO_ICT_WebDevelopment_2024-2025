@@ -1,6 +1,6 @@
 from django.db import models
 
-class Class(models.Model):
+class Klass(models.Model):
     id = models.AutoField(primary_key=True)
     parallel = models.IntegerField()
     class_number = models.CharField(max_length=10)
@@ -21,7 +21,7 @@ class Teacher(models.Model):
     classroom = models.ForeignKey('Classroom', on_delete=models.SET_NULL, null=True, blank=True)
     subject = models.ManyToManyField('Subject')
     class_lead = models.OneToOneField(
-        Class,
+        Klass,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -39,7 +39,7 @@ class Student(models.Model):
     last_name = models.CharField(max_length=50)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     gender = models.CharField(max_length=10, choices=GENDERS)
-    klass = models.ForeignKey(Class, on_delete=models.CASCADE)
+    klass = models.ForeignKey(Klass, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.last_name} {self.first_name} {self.middle_name}"
@@ -49,6 +49,7 @@ class QuarterGrade(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     subject = models.ForeignKey('Subject', on_delete=models.CASCADE)
     grade = models.IntegerField()
+    date = models.DateField(null=True)
 
     def __str__(self):
         return f"{self.student}: {self.subject}-{self.grade}"
@@ -74,10 +75,13 @@ class Lesson(models.Model):
     id = models.AutoField(primary_key=True)
     subject = models.ForeignKey('Subject', on_delete=models.CASCADE)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    klass = models.ForeignKey(Class, on_delete=models.CASCADE)
+    klass = models.ForeignKey(Klass, on_delete=models.CASCADE)
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     weekday = models.CharField(max_length=10, choices=WEEKDAYS)
-    lesson_number = models.CharField(max_length=2)
+    lesson_number = models.IntegerField()
+
+    class Meta:
+        unique_together = ('klass', 'weekday', 'lesson_number')
 
     def __str__(self):
         return f"{self.subject} ({self.weekday} - Lesson {self.lesson_number})"

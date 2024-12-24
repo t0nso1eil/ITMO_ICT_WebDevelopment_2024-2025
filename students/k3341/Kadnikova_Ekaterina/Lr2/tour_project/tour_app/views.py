@@ -3,9 +3,10 @@ from django.contrib.auth import logout
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from .forms import UserRegistrationForm, BookingForm, ReviewForm, TourFilterForm
 from .models import Tour, Booking
+from django.urls import reverse
 
 def register(request):
     if request.method == 'POST':
@@ -127,3 +128,17 @@ def add_review(request, tour_id):
 def custom_logout(request):
     logout(request)
     return redirect('tour_list')
+
+
+@permission_required('tour_app.can_confirm_booking', raise_exception=True)
+def manage_bookings(request, tour_id):
+    tour = get_object_or_404(Tour, id=tour_id)
+    if request.method == 'POST':
+        booking_id = request.POST.get('booking_id')
+        is_confirmed = request.POST.get('is_confirmed') == 'on'
+        booking = Booking.objects.get(id=booking_id)
+        booking.is_confirmed = is_confirmed
+        booking.save()
+        return redirect(reverse('manage_bookings', args=[tour_id]))
+    bookings = Booking.objects.filter(tour=tour).select_related('user')
+    return render(request, 'booking_management.html', {'bookings': bookings, 'tour': tour})

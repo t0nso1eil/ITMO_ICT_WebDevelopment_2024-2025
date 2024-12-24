@@ -94,34 +94,39 @@ Owner ID: 1, Name: Иван Иванов
 >>> license_obj = DriverLicense.objects.get(owner_id=owner.id)
 >>> print(f"License: {license_obj.license_number}, Type: {license_obj.type}, Date of Issue: {license_obj.date_of_issue}")
 License: 1234567890, Type: B, Date of Issue: 2015-06-01
->>> red_cars = Car.objects.filter(color="Красный")
->>> red_car_owners = Ownership.objects.filter(car__in=red_cars).values('owner').distinct()
->>> owners = Owner.objects.filter(id__in=red_car_owners)
->>> for owner in owners:
-...     print(owner.firstName, owner.lastName)
-...
-Андрей Сидоров
-Алексей Васильев
->>> ownerships_from_2010 = Ownership.objects.filter(date_start__year__gte=2010)
->>> owners_2010 = Owner.objects.filter(id__in=ownerships_from_2010.values('owner'))
->>> for owner in owners_2010:
-...     print(owner.firstName, owner.lastName, owner.id)
-...
-Иван Иванов 1
-Мария Петрова 2
-Елена Кузнецова 4
-Олег Михайлов 5
-Татьяна Смирнова 6
-Алексей Васильев 7
 >>> owner = Owner.objects.first()
 >>> license_obj = owner.licenses.first()
 >>> print(f"License: {license_obj.license_number}, Type: {license_obj.type}")
 License: 1234567890, Type: B
+>>> owners = Owner.objects.filter(ownerships__car__color="Красный")
+>>> for owner in owners:
+...     print(owner.firstName, owner.lastName, owner.id)
+...
+Андрей Сидоров 3
+Алексей Васильев 7
+>>> owners = Owner.objects.filter(ownerships__date_start__year=2023)
+>>> for owner in owners:
+...     print(owner.firstName, owner.lastName, owner.id)
+...
+Иван Иванов 1
+Иван Иванов 1
+Мария Петрова 2
+Мария Петрова 2
+Андрей Сидоров 3
+Елена Кузнецова 4
+Елена Кузнецова 4
+Елена Кузнецова 4
+Олег Михайлов 5
+Татьяна Смирнова 6
+Алексей Васильев 7
+Алексей Васильев 7
 ```
 
 ![](pics/2.1.png)
 ![](pics/2.2.png)
 ![](pics/2.3.png)
+![](pics/2.4.png)
+![](pics/2.5.png)
 
 ### Задание 3
 

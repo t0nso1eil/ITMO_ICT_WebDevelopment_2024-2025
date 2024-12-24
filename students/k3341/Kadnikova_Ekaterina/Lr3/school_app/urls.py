@@ -4,7 +4,8 @@ from .views import (
     LessonAPIView, LessonDetailsAPIView, ClassPerformanceAPIView,
     SubjectInClassAPIView, TeachersPerSubjectAPIView,
     TeachersWithSameSubjectsAPIView, GenderCountInClassesAPIView,
-    ClassroomCountAPIView
+    ClassroomCountAPIView, TeacherDetailsAPIView, StudentDetailsAPIView, QuarterGradeCreateAPIView,
+    ClassroomCreateAPIView, SubjectCreateAPIView, KlassAPIView
 )
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -36,4 +37,10 @@ urlpatterns = [
     path('classes/gender/count/', GenderCountInClassesAPIView.as_view(), name='gender-count-in-classes'),
     path('classrooms/count/', ClassroomCountAPIView.as_view(), name='classroom-count'),
     path('doc/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('teachers/<int:teacher_id>/', TeacherDetailsAPIView.as_view(), name='teacher-details'),
+    path('students/<int:student_id>/', StudentDetailsAPIView.as_view(), name='student-details'),
+    path('grades/', QuarterGradeCreateAPIView.as_view(), name='grade-create'),
+    path('classrooms/', ClassroomCreateAPIView.as_view(), name='classroom-create'),
+    path('subjects/', SubjectCreateAPIView.as_view(), name='subject-create'),
+    path('classes/', KlassAPIView.as_view(), name='klasses-list-create'),
 ]
