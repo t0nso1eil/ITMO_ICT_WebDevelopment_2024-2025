@@ -85,11 +85,18 @@ export default {
     async fetchStudents() {
       try {
         const response = await API.get("/students/");
-        this.students = response.data.Students.map((student) => ({
+        const studentsData = response.data;
+        const classesResponse = await API.get("/classes/");
+        const classes = classesResponse.data.reduce((map, klass) => {
+          map[klass.id] = klass;
+          return map;
+        }, {});
+        this.students = studentsData.map((student) => ({
           ...student,
           full_name: `${student.first_name} ${student.last_name} ${student.middle_name || ""}`.trim(),
-          // Используем информацию из объекта klass для формирования имени класса
-          class_name: `${student.klass.parallel}-${student.klass.class_number}`,
+          class_name: student.klass && classes[student.klass]
+              ? `${classes[student.klass].parallel}-${classes[student.klass].class_number}`
+              : "No Class",
         }));
       } catch (error) {
         console.error("Error fetching students:", error);

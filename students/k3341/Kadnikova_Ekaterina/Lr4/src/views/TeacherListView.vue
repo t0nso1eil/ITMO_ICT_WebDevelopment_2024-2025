@@ -87,16 +87,20 @@ export default {
     async fetchTeachers() {
       try {
         const response = await API.get("/teachers/");
-        this.teachers = response.data.Teachers.map((teacher) => ({
-          ...teacher,
-          full_name: `${teacher.first_name} ${teacher.last_name} ${teacher.middle_name || ""}`.trim(),
-          // Извлекаем только имена предметов
-          subjects: teacher.subject.map((subject) => subject.name),
-          // Формируем название класса
-          class_name: teacher.klass ? `${teacher.klass.parallel}-${teacher.klass.class_number}` : null,
-          // Добавляем информацию о классе (кабинет)
-          classroom: teacher.classroom ? teacher.classroom : null,
-        }));
+        if (response.data) {
+          this.teachers = response.data.map((teacher) => ({
+            ...teacher,
+            full_name: `${teacher.first_name} ${teacher.last_name} ${teacher.middle_name || ""}`.trim(),
+            subjects: teacher.subject.map((subject) => subject.name),
+            class_name: teacher.klass
+                ? `${teacher.klass.parallel}-${teacher.klass.class_number}`
+                : null,
+            classroom: teacher.classroom ? teacher.classroom : null,
+          }));
+        } else {
+          console.error("Unexpected API response structure:", response.data);
+          this.teachers = [];
+        }
       } catch (error) {
         console.error("Error fetching teachers:", error);
       }

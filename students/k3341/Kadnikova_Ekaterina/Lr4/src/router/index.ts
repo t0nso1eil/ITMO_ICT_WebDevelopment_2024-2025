@@ -2,10 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import LoginView from '@/views/LoginView.vue';
-import TeacherList from "@/views/TeacherList.vue";
+import TeacherListView from "@/views/TeacherListView.vue";
 import ProfileView from "../views/ProfileView.vue";
-import StudentList from "../views/StudentList.vue";
-import ClassList from "../views/ClassList.vue";
+import StudentListView from "../views/StudentListView.vue";
+import ClassListView from "../views/ClassListView.vue";
+import ClassroomListView from "../views/ClassroomListView.vue";
+import ScheduleView from "../views/ScheduleView.vue";
+import GradeListView from "../views/GradeListView.vue";
 
 
 const router = createRouter({
@@ -39,17 +42,32 @@ const router = createRouter({
     {
       path: '/teachers',
       name: 'Teachers',
-      component: TeacherList
+      component: TeacherListView
     },
     {
       path: '/students',
       name: 'Students',
-      component: StudentList
+      component: StudentListView
     },
     {
       path: '/classes',
       name: 'Classes',
-      component: ClassList
+      component: ClassListView
+    },
+    {
+      path: '/classrooms',
+      name: 'Classrooms',
+      component: ClassroomListView
+    },
+    {
+      path: '/lessons',
+      name: 'Schedule',
+      component: ScheduleView
+    },
+    {
+      path: '/grades',
+      name: 'Grades',
+      component: GradeListView
     },
   ],
 })

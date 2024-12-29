@@ -19,6 +19,7 @@
             class="class-card"
         >
           <div class="class-card-header">
+            <!-- Отображаем параллель и номер класса -->
             <h3>{{ klass.parallel }}-{{ klass.class_number }}</h3>
           </div>
           <div class="class-card-footer">
@@ -89,7 +90,7 @@ export default {
     async fetchClasses() {
       try {
         const response = await API.get("/classes/");
-        this.classes = response.data.Classes;
+        this.classes = response.data;
       } catch (error) {
         console.error("Error fetching classes:", error);
       }

@@ -90,7 +90,6 @@ export default {
         console.error('Error fetching classrooms:', error);
       }
     },
-    // Получаем список классов
     async fetchKlasses() {
       try {
         const response = await API.get('/classes/');
@@ -99,10 +98,10 @@ export default {
         console.error('Error fetching classes:', error);
       }
     },
-    // Создание нового учителя
     async createTeacher() {
       const teacherData = {
         ...this.teacher,
+        klass: this.teacher.class_lead,
         subject: this.selectedSubjects.length > 0 ? this.selectedSubjects : []
       };
 

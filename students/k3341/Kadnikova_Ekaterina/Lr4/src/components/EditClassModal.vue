@@ -47,12 +47,15 @@ export default {
     async fetchTeachers() {
       try {
         const response = await API.get("/teachers/");
-        this.teachers = response.data;
+        this.teachers = response.data.map(teacher => ({
+          id: teacher.id,
+          first_name: teacher.first_name,
+          last_name: teacher.last_name,
+        }));
       } catch (error) {
         console.error("Error fetching teachers:", error);
       }
     },
-    // Обновляем информацию о классе
     async updateClass() {
       try {
         await API.put(`/classes/${this.klass.id}/`, this.klass);

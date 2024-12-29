@@ -53,19 +53,18 @@ export default {
   },
   data() {
     return {
-      klasses: [], // Список классов
+      klasses: [],
     };
   },
   methods: {
     async fetchKlasses() {
       try {
         const response = await API.get('/classes/');
-        this.klasses = response.data.Classes;
+        this.klasses = response.data;
       } catch (error) {
         console.error('Error fetching classes:', error);
       }
     },
-    // Обновляем информацию об ученике
     async updateStudent() {
       const studentData = { ...this.student };
       try {

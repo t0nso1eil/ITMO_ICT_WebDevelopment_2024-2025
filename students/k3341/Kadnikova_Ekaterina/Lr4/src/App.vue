@@ -28,6 +28,9 @@ const handleLogin = () => {
         <RouterLink to="/teachers" class="nav-item">Teachers</RouterLink>
         <RouterLink to="/students" class="nav-item">Students</RouterLink>
         <RouterLink to="/classes" class="nav-item">Classes</RouterLink>
+        <RouterLink to="/classrooms" class="nav-item">Classrooms</RouterLink>
+        <RouterLink to="/lessons" class="nav-item">Schedule</RouterLink>
+        <RouterLink to="/grades" class="nav-item">Grades</RouterLink>
         <RouterLink v-if="!isAuthenticated" to="/login" class="nav-item">Login</RouterLink>
         <RouterLink v-if="!isAuthenticated" to="/register" class="nav-item">Register</RouterLink>
         <RouterLink v-if="isAuthenticated" to="/profile" class="nav-item">Profile</RouterLink>

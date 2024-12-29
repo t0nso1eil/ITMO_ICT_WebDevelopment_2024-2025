@@ -61,16 +61,14 @@ export default {
     };
   },
   methods: {
-    // Получаем список классов
     async fetchKlasses() {
       try {
         const response = await API.get('/classes/');
-        this.klasses = response.data.Classes;
+        this.klasses = response.data;
       } catch (error) {
         console.error('Error fetching classes:', error);
       }
     },
-    // Создаем ученика
     async createStudent() {
       const studentData = { ...this.student };
       try {

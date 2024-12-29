@@ -97,6 +97,7 @@ export default {
     async updateTeacher() {
       const teacherData = {
         ...this.teacher,
+        klass: this.teacher.class_lead,
         subject: this.selectedSubjects.length > 0 ? this.selectedSubjects : null
       };
 

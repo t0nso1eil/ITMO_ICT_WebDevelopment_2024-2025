@@ -9,6 +9,21 @@
         <p><strong>Number of Students:</strong> {{ studentCount }}</p>
       </div>
 
+      <div class="gender-summary">
+        <h4>Gender Summary:</h4>
+        <p><strong>Boys:</strong> {{ klassGenderCount.boys }}</p>
+        <p><strong>Girls:</strong> {{ klassGenderCount.girls }}</p>
+      </div>
+
+      <div class="students">
+        <h4>Students:</h4>
+        <ul>
+          <li v-for="student in students" :key="student.id">
+            {{ student.first_name }} {{ student.last_name }}
+          </li>
+        </ul>
+      </div>
+
       <button @click="$emit('close')">Close</button>
     </div>
   </div>
@@ -25,76 +40,84 @@ export default {
     return {
       teacher: null,
       students: [],
+      genderCounts: {},
     };
   },
   computed: {
     klassTeacherName() {
-      return this.teacher ? `${this.teacher.first_name} ${this.teacher.last_name}` : 'Loading teacher...';
+      if (this.teacher) {
+        return `${this.teacher.first_name} ${this.teacher.last_name}`;
+      } else if (this.teacher === null) {
+        return "Loading teacher...";
+      } else {
+        return "Failed to load teacher";
+      }
     },
     studentCount() {
-      return this.students.filter(student => student.class_id === this.klass.id).length;
+      return this.students.length;
+    },
+    klassGenderCount() {
+      if (this.genderCounts[this.klass.id]) {
+        const { boys, girls } = this.genderCounts[this.klass.id];
+        return { boys, girls };
+      }
+      return { boys: 0, girls: 0 };
     },
   },
   methods: {
     async fetchTeacher() {
       try {
-        const teacherResponse = await API.get(`/teachers/${this.klass.class_teacher}`);
+        const teacherResponse = await API.get(`/teachers/${this.klass.class_teacher}/`);
         this.teacher = teacherResponse.data;
       } catch (error) {
         console.error("Error fetching teacher:", error);
+        this.teacher = false;
       }
     },
     async fetchStudents() {
       try {
-        const studentResponse = await API.get("/students/");
+        const studentResponse = await API.get(`/class/${this.klass.id}/students/`);
         this.students = studentResponse.data.Students;
       } catch (error) {
         console.error("Error fetching students:", error);
+        this.students = [];
+      }
+    },
+    async fetchGenderCounts() {
+      try {
+        const response = await API.get('/classes/gender/count/');
+        this.genderCounts = response.data.GenderCounts;
+      } catch (error) {
+        console.error('Error fetching gender counts:', error);
+        this.genderCounts = {};
       }
     },
   },
   created() {
     this.fetchTeacher();
     this.fetchStudents();
+    this.fetchGenderCounts();
   },
 };
 </script>
 
 <style scoped>
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@import "@/assets/styles.css";
+
+.students {
+  margin-top: 1rem;
 }
 
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 400px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.students h4 {
+  margin-bottom: 0.5rem;
 }
 
-.details {
-  margin-bottom: 20px;
+.students ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
 }
 
-button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
+.gender-summary {
+  margin-top: 1rem;
 }
 </style>

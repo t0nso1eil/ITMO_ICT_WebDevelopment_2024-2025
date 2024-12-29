@@ -5,7 +5,11 @@ const API = axios.create({
     baseURL: 'http://localhost:8000',
     headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Origin': 'http://localhost:5173'
     },
+    withCredentials: true,
+    maxRedirects: 0
 });
 
 API.interceptors.request.use(
@@ -17,6 +21,22 @@ API.interceptors.request.use(
         return config;
     },
     (error) => {
+        return Promise.reject(error);
+    }
+);
+
+API.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+        if (error.response && error.response.status === 301 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            const token = TokenStore.getToken();
+            if (token) {
+                originalRequest.headers['Authorization'] = `Token ${token}`;
+            }
+            return axios(originalRequest);
+        }
         return Promise.reject(error);
     }
 );
