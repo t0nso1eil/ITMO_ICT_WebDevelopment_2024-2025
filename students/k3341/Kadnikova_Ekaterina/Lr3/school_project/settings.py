@@ -140,5 +140,3 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
-
-SECRET_KEY = 'ugv9=w+m)3u7ca8p3t9r&#10+nnvol=gzrpch0=4nu83gdbyxd'
